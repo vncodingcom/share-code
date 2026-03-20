@@ -68,3 +68,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 &lt;/script&gt;</pre>
+
+Thay đổi <span class='red'>/p/lien-ket.html</span> và <span class='red'>https://www.vncoding.com/p/lien-ket.html</span> cho đúng với blog của bạn
+
