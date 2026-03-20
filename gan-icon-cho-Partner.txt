@@ -1,0 +1,38 @@
+<pre>&lt;script&gt;
+document.addEventListener(&quot;DOMContentLoaded&quot;,function(){
+
+const PARTNER_IDS=[
+&quot;<span class="red">12345678901234567890</span>&quot;
+];
+
+document.querySelectorAll(&quot;.comment-header cite.user a&quot;).forEach(function(a){
+
+const match=a.href.match(/profile\/(\d+)/);
+if(!match) return;
+
+const id=match[1];
+
+if(PARTNER_IDS.includes(id)){
+
+const icon=document.createElement(&quot;span&quot;);
+
+icon.innerHTML=`⭐`;
+
+icon.style.marginLeft=&quot;5px&quot;;
+
+a.parentNode.appendChild(icon);
+
+}
+
+});
+
+});
+&lt;/script&gt;</pre>
+
+Nếu có nhiều Partner thì thêm như sau:
+<pre>const PARTNER_IDS = [
+<span class="red">&quot;12345678901234567890&quot;,
+&quot;98765432109876543210&quot;</span>
+];</pre>
+
+Bạn có thể thay icon ⭐ bằng SVG hoặc icon khác để đẹp hơn
