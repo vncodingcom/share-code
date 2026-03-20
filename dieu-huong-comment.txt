@@ -1,0 +1,70 @@
+<pre>&lt;script&gt;
+document.addEventListener("DOMContentLoaded", function(){
+
+  const processed = new WeakSet();
+
+  const NOTICE = `
+  &lt;div class="vnc-link-guide"&gt;
+    🔗 Mình hiểu bạn đang muốn đặt liên kết với blog.&lt;br&gt;
+    👉 Vui lòng truy cập:
+    &lt;a href="<span class='red'>/p/lien-ket.html</span>" target="_blank"&gt;
+      <span class='red'>https://www.vncoding.com/p/lien-ket.html</span>
+    &lt;/a&gt;&lt;br&gt;
+    Xin cảm ơn ❤️
+  &lt;/div&gt;
+  `;
+
+  function isLinkRequest(text){
+    if(!text) return false;
+
+    text = text.toLowerCase();
+
+    const hasLink = /https?:\/\/|www\./i.test(text);
+
+    const hasKeyword =
+      text.includes("liên kết") ||
+      text.includes("mô tả") ||
+      text.includes("link blog");
+
+    return hasLink &amp;&amp; hasKeyword;
+  }
+
+  function handleComments(){
+
+    document.querySelectorAll('.comment-content').forEach(function(el){
+
+      if(processed.has(el)) return;
+
+      const text = el.innerText;
+
+      if(isLinkRequest(text)){
+
+        el.classList.add("vnc-overlay");
+
+        if(!el.nextElementSibling || !el.nextElementSibling.classList.contains("vnc-link-guide")){
+          el.insertAdjacentHTML("afterend", NOTICE);
+        }
+
+      }
+
+      processed.add(el);
+
+    });
+
+  }
+
+  handleComments();
+
+  let timer;
+  const observer = new MutationObserver(function(){
+    clearTimeout(timer);
+    timer = setTimeout(handleComments, 120);
+  });
+
+  observer.observe(document.body,{
+    childList:true,
+    subtree:true
+  });
+
+});
+&lt;/script&gt;</pre>
