@@ -1,0 +1,32 @@
+function doPost(e) {
+  try {
+
+    const allowed = ["vncoding.com"]; // domain cho phép
+
+    if(!allowed.some(d => e.parameter.referer && e.parameter.referer.includes(d))){
+      throw new Error("Blocked domain");
+    }
+
+    const folderId = "XXXXXXXXXX"; // thay ID folder
+    const folder = DriveApp.getFolderById(folderId);
+
+    const blob = Utilities.newBlob(
+      Utilities.base64Decode(e.parameter.file),
+      e.parameter.type,
+      e.parameter.name
+    );
+
+    const file = folder.createFile(blob);
+
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "success",
+      url: "https://drive.google.com/uc?export=view&id=" + file.getId()
+    })).setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({
+      status: "error",
+      message: err.toString()
+    }));
+  }
+}
