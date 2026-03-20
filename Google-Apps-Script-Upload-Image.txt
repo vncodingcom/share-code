@@ -1,13 +1,13 @@
 function doPost(e) {
   try {
 
-    const allowed = ["vncoding.com"]; // domain cho phép
+    const allowed = ["<span class='red'>vncoding.com</span>"]; // domain cho phép
 
     if(!allowed.some(d => e.parameter.referer && e.parameter.referer.includes(d))){
       throw new Error("Blocked domain");
     }
 
-    const folderId = "XXXXXXXXXX"; // thay ID folder
+    const folderId = "<span class='red'>XXXXXXXXXX"</span>; // thay ID folder
     const folder = DriveApp.getFolderById(folderId);
 
     const blob = Utilities.newBlob(
