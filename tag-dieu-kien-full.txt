@@ -1,5 +1,3 @@
-<tr><td colspan="2" style="background:#fff3e0;font-weight:bold">🚀 Snippet nâng cao</td></tr>
-
 <tr>
 <td>Trang archive</td>
 <td><div class="vnc-code"><button class="vnc-copy">Copy</button> &lt;b:if cond='data:blog.pageType == "archive"'&gt; CODE &lt;/b:if&gt;</div></td>
