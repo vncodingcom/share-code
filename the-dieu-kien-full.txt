@@ -1,251 +1,341 @@
 <tr>
+<td colspan="2" style="background:#fff3e0;font-weight:bold">
+🚀 Snippet nâng cao
+</td>
+</tr>
+
+<tr>
 <td>Trang archive</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.pageType == "archive"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Trang lỗi 404</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.pageType == "error_page"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Desktop</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='!data:blog.isMobile'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Blog private</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.isPrivateBlog'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Không có comment</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.numComments == 0'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Có ảnh đại diện</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.featuredImage'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Có label</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.labels'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>URL chính xác</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.url == "https://www.vncoding.com/"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>URL khác</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.url != "https://www.vncoding.com/"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>URL chứa keyword</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.url contains "2026"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Post ID</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.id == "123456"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Post URL</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.url == "URL_BAI_VIET"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>AND condition</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.pageType == "item" and data:blog.isMobile'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>OR condition</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.pageType == "item" or data:blog.pageType == "static_page"'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Loop posts</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:loop values='data:posts' var='post'&gt;
-CODE
+  CODE
 &lt;/b:loop&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Loop comments</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:loop values='data:post.comments' var='comment'&gt;
-CODE
+  CODE
 &lt;/b:loop&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Loop labels</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:loop values='data:post.labels' var='label'&gt;
-CODE
+  CODE
 &lt;/b:loop&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check author</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.author'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check timestamp</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.timestamp'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check snippet</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.snippet'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check thumbnail</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.thumbnailUrl'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check first image</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.firstImageUrl'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check labels size</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.labels.size &gt; 0'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Check comments size</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:post.comments.size &gt; 0'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Older posts</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:olderPageUrl'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Newer posts</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:newerPageUrl'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Homepage check</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.homepageUrl == data:blog.url'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
 
 <tr>
 <td>Not homepage</td>
-<td><div class="vnc-code"><button class="vnc-copy">Copy</button>
+<td>
+<div class="vnc-code">
+<button class="vnc-copy">Copy</button>
 &lt;b:if cond='data:blog.homepageUrl != data:blog.url'&gt;
-CODE
+  CODE
 &lt;/b:if&gt;
-</div></td>
+</div>
+</td>
 </tr>
