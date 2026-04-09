@@ -1,0 +1,172 @@
+export default {
+  async fetch(req, env) {
+    const url = new URL(req.url);
+
+    // TELEGRAM WEBHOOK
+    if (url.pathname === "/webhook") {
+      return handleWebhook(req, env);
+    }
+
+    // TEST CHECK
+    if (url.pathname === "/check") {
+      return checkNewPost(env);
+    }
+
+    // TRACK CLICK
+    if (url.pathname === "/click") {
+      const count = await env.COUNTER.get("click") || 0;
+      await env.COUNTER.put("click", Number(count) + 1);
+      return new Response("ok");
+    }
+
+    return new Response("VNCoding NewPost OK");
+  },
+
+  async scheduled(event, env) {
+    await checkNewPost(env);
+  }
+};
+
+// ===== CONFIG =====
+const BOT_TOKEN = "<span class='red'>847685XXXX:XXXXa_H-wqk_vCYiS7NmH5gBZ5IXXXXX</span>"; // ⚠️ nhớ thay lại token mới
+const BLOG_FEED = "<span class='red'>https://www.vncoding.com/feeds/posts/default?alt=json</span>"; ⚠️ nhớ thay lại feed của bạn
+
+// ===== HANDLE TELEGRAM =====
+async function handleWebhook(req, env) {
+  try {
+    const data = await req.json();
+
+    if (!data.message) {
+      return new Response("ok");
+    }
+
+    const msg = data.message;
+    const chatId = msg.chat.id;
+    const text = msg.text || "";
+
+    // ===== START =====
+    if (text.startsWith("/start")) {
+
+      // AUTO SUBSCRIBE (deep link)
+      if (text.includes("newpost")) {
+        await env.SUBSCRIBERS.put(chatId.toString(), "1");
+
+        await sendMessage(chatId,
+          "✅ <b>Đã đăng ký nhận bài viết mới!</b>\n\n📢 Khi có bài mới, bạn sẽ nhận được thông báo ngay."
+        );
+
+        return new Response("ok");
+      }
+
+      // MENU
+      await sendMessage(chatId,
+        "👋 Chào bạn!\n\nChọn chức năng bên dưới:",
+        {
+          keyboard: [
+            [{ text: "🔔 Nhận bài viết mới" }],
+            [{ text: "❌ Hủy thông báo" }]
+          ],
+          resize_keyboard: true
+        }
+      );
+
+      return new Response("ok");
+    }
+
+    // ===== SUBSCRIBE =====
+    if (text === "🔔 Nhận bài viết mới") {
+      await env.SUBSCRIBERS.put(chatId.toString(), "1");
+
+      await sendMessage(chatId,
+        "✅ Bạn đã đăng ký nhận thông báo!"
+      );
+    }
+
+    // ===== UNSUBSCRIBE =====
+    if (text === "❌ Hủy thông báo") {
+      await env.SUBSCRIBERS.delete(chatId.toString());
+
+      await sendMessage(chatId,
+        "🚫 Bạn đã hủy nhận thông báo."
+      );
+    }
+
+    return new Response("ok");
+
+  } catch (e) {
+    // ⚠️ cực kỳ quan trọng: luôn trả 200
+    return new Response("ok");
+  }
+}
+
+// ===== CHECK BÀI MỚI =====
+async function checkNewPost(env) {
+  try {
+    const res = await fetch(BLOG_FEED);
+    const data = await res.json();
+
+    if (!data.feed.entry || data.feed.entry.length === 0) {
+      return new Response("No post");
+    }
+
+    const latest = data.feed.entry[0];
+    const title = latest.title.$t;
+    const link = latest.link.find(l => l.rel === "alternate").href;
+
+    const lastSaved = await env.LAST_POST.get("latest");
+
+    if (lastSaved === link) {
+      return new Response("No new post");
+    }
+
+    // lưu bài mới
+    await env.LAST_POST.put("latest", link);
+
+    const list = await env.SUBSCRIBERS.list();
+    let sent = 0;
+
+    for (const key of list.keys) {
+      try {
+        await sendMessage(
+          key.name,
+          `🆕 <b>Bài viết mới từ VNCoding</b>\n\n📌 ${title}\n\n👉 ${link}`,
+          {
+            inline_keyboard: [
+              [{ text: "📖 Xem bài viết", url: link }]
+            ]
+          }
+        );
+        sent++;
+      } catch (err) {
+        // user block bot → xóa luôn
+        await env.SUBSCRIBERS.delete(key.name);
+      }
+    }
+
+    return new Response(`Sent ${sent}`);
+
+  } catch (e) {
+    return new Response("error");
+  }
+}
+
+// ===== SEND TELEGRAM =====
+async function sendMessage(chatId, text, markup) {
+  const body = {
+    chat_id: chatId,
+    text: text,
+    parse_mode: "HTML"
+  };
+
+  if (markup) {
+    body.reply_markup = markup;
+  }
+
+  await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+}
