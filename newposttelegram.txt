@@ -52,7 +52,7 @@ async function handleWebhook(req, env) {
         await env.SUBSCRIBERS.put(chatId.toString(), "1");
 
         await sendMessage(chatId,
-          "✅ <b>Đã đăng ký nhận bài viết mới!</b>\n\n📢 Khi có bài mới, bạn sẽ nhận được thông báo ngay."
+          "✅ Đã đăng ký nhận bài viết mới!\n\n📢 Khi có bài mới, bạn sẽ nhận được thông báo ngay."
         );
 
         return new Response("ok");
@@ -111,7 +111,7 @@ async function checkNewPost(env) {
 
     const latest = data.feed.entry[0];
     const title = latest.title.$t;
-    const link = latest.link.find(l => l.rel === "alternate").href;
+    const link = latest.link.find(l =&gt; l.rel === "alternate").href;
 
     const lastSaved = await env.LAST_POST.get("latest");
 
@@ -129,7 +129,7 @@ async function checkNewPost(env) {
       try {
         await sendMessage(
           key.name,
-          `🆕 <b>Bài viết mới từ VNCoding</b>\n\n📌 ${title}\n\n👉 ${link}`,
+          `🆕 Bài viết mới từ VNCoding\n\n📌 ${title}\n\n👉 ${link}`,
           {
             inline_keyboard: [
               [{ text: "📖 Xem bài viết", url: link }]
