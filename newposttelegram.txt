@@ -1,4 +1,4 @@
-export default {
+<pre>export default {
   async fetch(req, env) {
     const url = new URL(req.url);
 
@@ -170,3 +170,4 @@ async function sendMessage(chatId, text, markup) {
     body: JSON.stringify(body)
   });
 }
+</pre>
