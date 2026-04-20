@@ -1,0 +1,200 @@
+<pre>
+export default {
+  async fetch(req, env) {
+
+    const cors = {
+      "Access-Control-Allow-Origin": "<span class='red'>https://www.vncoding.com</span>",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type"
+    };
+
+    if (req.method === "OPTIONS") {
+      return new Response(null, { headers: cors });
+    }
+
+    try {
+      const url = new URL(req.url);
+
+      // ================= SUBSCRIBE =================
+      if (url.pathname === "/subscribe") {
+
+        const body = await req.json().catch(() =&gt; ({}));
+        const email = body.email;
+
+        if (!email) {
+          return new Response(JSON.stringify({ error: "Thiếu email" }), {
+            headers: { ...cors, "Content-Type": "application/json" }
+          });
+        }
+
+        const token = btoa(email + Date.now());
+
+        // lưu pending
+        await env.SUB_KV.put("pending_" + token, email, { expirationTtl: 3600 });
+
+        // 👉 GỬI MAIL (FIX CHÍNH Ở ĐÂY)
+        const res = await fetch(env.MAIL_GAS, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            type: "confirm",
+            email,
+            token
+          })
+        });
+
+        // 👉 DEBUG
+        const debug = await res.text();
+
+        return new Response(JSON.stringify({
+          ok: true,
+          debug: debug, // xem GAS trả gì
+          redirect: `<span class='red'>https://www.vncoding.com/p/confirm.html</span>?email=${encodeURIComponent(email)}`
+        }), {
+          headers: { ...cors, "Content-Type": "application/json" }
+        });
+      }
+
+      // ================= CONFIRM =================
+      if (url.pathname === "/confirm") {
+
+        const token = url.searchParams.get("token");
+        const email = await env.SUB_KV.get("pending_" + token);
+
+        if (!email) return new Response("Token lỗi");
+
+        // lưu chính thức
+        await env.SUB_KV.put("sub_" + email, "1");
+        await env.SUB_KV.delete("pending_" + token);
+
+        // 👉 lưu Google Sheet
+        await fetch(env.SUB_GAS, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email })
+        });
+
+        return new Response(`
+&lt;!DOCTYPE html&gt;
+&lt;html lang="vi"&gt;
+&lt;head&gt;
+&lt;meta charset="UTF-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+&lt;title&gt;Đăng ký thành công&lt;/title&gt;
+&lt;style&gt;
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .box {
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    max-width: 400px;
+  }
+
+  .icon {
+    font-size: 60px;
+    color: #28a745;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    margin: 10px 0;
+    color: #333;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 25px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #fff;
+    font-weight: bold;
+  }
+
+  .btn:hover {
+    opacity: 0.9;
+  }
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class="box"&gt;
+  &lt;div class="icon"&gt;✔&lt;/div&gt;
+  &lt;h2&gt;Đăng ký thành công!&lt;/h2&gt;
+  &lt;p&gt;Bạn sẽ nhận được bài viết mới qua email.&lt;/p&gt;
+
+  &lt;a href="<span class='red'>https://www.vncoding.com</span>" class="btn"&gt;Quay về trang chủ&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+`, {
+  headers: { "Content-Type": "text/html; charset=UTF-8" }
+});
+      }
+
+      // ================= GET SUB =================
+      if (url.pathname === "/get-subs") {
+
+        const list = await env.SUB_KV.list({ prefix: "sub_" });
+        const emails = list.keys.map(k =&gt; k.name.replace("sub_", ""));
+
+        return new Response(JSON.stringify(emails), {
+          headers: { ...cors, "Content-Type": "application/json" }
+        });
+      }
+
+      // ================= TEST MAIL =================
+      if (url.pathname === "/test-mail") {
+
+        const res = await fetch(env.MAIL_GAS, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            type: "confirm",
+            email: "mailtest@gmail.com",
+            token: "123"
+          })
+        });
+
+        const text = await res.text();
+
+        return new Response(text, { headers: cors });
+      }
+
+      return new Response("OK", { headers: cors });
+
+    } catch (err) {
+      return new Response(JSON.stringify({
+        error: err.message
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+  }
+};
+</pre>
